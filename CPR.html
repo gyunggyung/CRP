@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<style type="text/css">
+.button_style {
+	font-weight:bold;
+	text-decoration:none;
+	font-family:Arial;
+	text-indent:0px;
+	line-height:50px;
+	-moz-border-radius:0px;
+	-webkit-border-radius:0px;
+	border-radius:0px;
+	text-align:center;
+	vertical-align:middle;
+	display:inline-block;
+	font-size:32px;
+	color:#696969;
+	width:80px;
+	height:80px;
+	padding:13px;
+	border-color:#e1e1e1;
+	border-width:1px;
+	border-style:solid;
+}
+
+.button_style2 {
+	font-weight:bold;
+	text-decoration:none;
+	font-family:Arial;
+	text-indent:0px;
+	line-height:50px;
+	-moz-border-radius:0px;
+	-webkit-border-radius:0px;
+	border-radius:0px;
+	text-align:center;
+	vertical-align:middle;
+	display:inline-block;
+	font-size:32px;
+	color:#696969;
+	width:80px;
+	height:160px;
+	padding:13px;
+	border-color:#e1e1e1;
+	border-width:1px;
+	border-style:solid;
+}
+
+.text_style {
+	text-decoration:none;
+	font-family:Arial;
+	text-indent:0px;
+	line-height:100px;
+	-moz-border-radius:0px;
+	-webkit-border-radius:0px;
+	border-radius:0px;
+	text-align:right;
+	vertical-align:middle;
+	display:inline-block;
+	font-size:20px;
+	color:#353535;
+	width:400px;
+	height:100px;
+	padding:11px;
+	text-shadow:#A6A6A6 0px 1px 0px;
+	border-color:#A6A6A6;
+	border-width:0px;
+	border-style:solid;
+}
+
+.note {
+	font-family:고딕체;
+
+	text-align:left;
+	vertical-align:middle;
+	display:inline-block;
+	font-size:20px;
+	color:#151515;
+	padding:15px;
+	border-color:#eceded;
+}
+
+.formula {
+	text-decoration:none;
+	font-family:Arial;
+	text-indent:0px;
+	line-height:30px;
+	-moz-border-radius:0px;
+	-webkit-border-radius:0px;
+	border-radius:0px;
+	text-align:left;
+	vertical-align:middle;
+	display:inline-block;
+	font-size:20px;
+	color:#6b6b6b;
+	width:400px;
+	height:30px;
+	padding:11px;
+	text-shadow:#c7c7c7 0px 1px 0px;
+	border-color:#ffffff;
+	border-width:0px;
+	border-style:solid;
+	background-color: #e2e2e2;
+}
+
+.text_style:active {
+	position:relative;
+	top:5px
+}
+
+.text_style:hover {
+}
+</style>
+
+
+
+<head>
+	<meta charset="utf-8">
+	<title>CPR</title>
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+
+	<script >
+		var USD;	
+		var EUR;
+		var JPY;
+		var KRW=1;
+		var GBP;
+		var CNY;
+		var INR;
+		var AUD;
+		var SEK;
+
+		var rate=1;//환율
+		function get_rate_of_exchange()
+		{
+			var oresult = document.getElementById("result");
+			
+			
+			
+			$.ajax({
+				type:       "GET",
+				url:        "https://openexchangerates.org/api/latest.json?app_id=*******",
+				dataType: "json",
+				success:    function(data) {
+					var rate_krw = parseFloat(data["rates"]["KRW"]);
+
+					console.log(data);
+					console.log(rate_krw);
+					for (var k in data["rates"])
+					{
+						var rate_basekrw = parseFloat(data["rates"][k]) / rate_krw;
+						console.log(k + " : 1$당 " + data["rates"][k] + " " + k + " / 1won당 " + rate_basekrw + " " + k);
+					}
+
+				      	USD=(data["rates"]["USD"]/data["rates"]["KRW"])
+				     	EUR=(data["rates"]["EUR"]/data["rates"]["KRW"])
+				      	JPY=(data["rates"]["JPY"]/data["rates"]["KRW"])
+				      	GBP=(data["rates"]["GBP"]/data["rates"]["KRW"])
+				      	CNY=(data["rates"]["CNY"]/data["rates"]["KRW"])
+				      	GBP=(data["rates"]["GBP"]/data["rates"]["KRW"])
+				      	INR=(data["rates"]["INR"]/data["rates"]["KRW"])
+				      	AUD=(data["rates"]["AUD"]/data["rates"]["KRW"])
+				      	SEK=(data["rates"]["SEK"]/data["rates"]["KRW"])
+
+			  		}
+		      	});
+		}
+
+		function see_rate_of_exchange()
+		{
+		var oresult = document.getElementById("result");
+		
+		
+		$.ajax({
+			type:       "GET",
+			url:        "https://openexchangerates.org/api/latest.json?app_id=699f122f109341f79ee99ae8814cb5ef",
+			dataType: "json",
+			success:    function(data) {
+				var rate_krw = parseFloat(data["rates"]["KRW"]);
+				console.log(data);
+				console.log(rate_krw);
+				for (var k in data["rates"])
+				{
+					var rate_basekrw = parseFloat(data["rates"][k]) / rate_krw;
+					console.log(k + " : 1$당 " + data["rates"][k] + " " + k + " / 1won당 " + rate_basekrw + " " + k);
+					
+					calculation.contents.value +=  k + " / 1000won당 " + rate_basekrw*1000 + " " + k + "\n";
+					}
+				}
+			});
+
+		}
+
+
+		function go() {
+			calculation.formula.value=calculation.result.value;
+ 			calculation.result.value = eval(calculation.result.value);
+			round_off(calculation.result.value);
+ 		}
+
+ 		function round_off(num)
+ 		{
+ 			var outcome=parseFloat(num);
+ 			outcome=outcome.toFixed(2);
+ 			calculation.result.value=outcome;
+ 		}
+ 		
+ 		function on(){
+ 			 if(event.keyCode == 13)
+			 {
+			         go();
+			         return;
+			 }
+ 		}
+
+
+ 		function clears() { 
+ 			calculation.result.value=''
+ 			calculation.formula.value=''
+ 			calculation.contents.value=''
+ 		}
+
+
+ 		function del(){
+ 			var go=document.getElementById("resul");
+ 			
+ 			var go2 = go.value.slice(0, -1)
+ 			calculation.result.value=go2;
+ 		}
+
+ 		function cheak_exchange_rate(id){
+ 			var rate2=id;
+ 			var temp=document.getElementById("resul");
+ 			var outcome;
+ 			switch(id)
+ 			{
+ 				case '1':
+ 					rate2=USD;
+ 					break;
+
+ 				case '2':
+ 					rate2=EUR;
+					break
+
+ 				case '3':
+ 					rate2=JPY;
+ 					break
+
+ 				case '4':
+ 					rate2=KRW;
+ 					break
+
+ 				case '5':
+ 					rate2=GBP;
+ 					break
+
+ 				case '6':
+ 					rate2=CNY;
+ 					break
+
+ 				case '7':
+ 					rate2=INR;
+ 					break
+
+ 				case '8':
+ 					rate2=AUD;
+ 					break
+
+ 				case '9':
+ 					rate2=SEK;
+ 					break
+ 			}
+ 			rate2=rate2/rate;
+ 			outcome=temp.value*rate2;
+ 			outcome=outcome.toFixed(2);
+ 			calculation.result.value=outcome;
+ 			switch(id)
+ 			{
+ 				case '1':
+ 					rate=USD;
+ 					break;
+
+ 				case '2':
+ 					rate=EUR;
+					break
+
+ 				case '3':
+ 					rate=JPY;
+ 					break
+
+ 				case '4':
+ 					rate=KRW;
+ 					break
+
+ 				case '5':
+ 					rate=GBP;
+ 					break
+ 				case '6':
+ 					rate=CNY;
+ 					break
+
+ 				case '7':
+ 					rate=INR;
+ 					break
+
+ 				case '8':
+ 					rate=AUD;
+ 					break
+
+ 				case '9':
+ 					rate=SEK;
+ 					break
+ 			}
+ 		}
+
+
+	</script>	
+
+	
+
+</head>
+<body onload="get_rate_of_exchange();">
+<form name="calculation"  method="post" action="javascript:go()">
+<table bgcolor=#ededed >
+	<img src="cpr.jpg" height="100" width="370.00">
+	<tr>
+		<td colspan="5" height="50" align="right">
+			<input type="text"  class='formula' name="formula" size=40  style="">
+		</td>
+		<td rowspan="2" height="50" align="left">
+			<form name="exchange_rate">
+				<input type="radio" name="chk_info" id="USD" onclick="cheak_exchange_rate('1');" >USD($)<br>
+				<input type="radio" name="chk_info" id="EUR" onclick="cheak_exchange_rate('2');">EUR(€)<br>
+				<input type="radio" name="chk_info" id="JPY" onclick="cheak_exchange_rate('3');">JPY(¥)<br>
+				<input type="radio" name="chk_info" id="KRW" onclick="cheak_exchange_rate('4');" checked>KRW(₩)<br>
+				<input type="radio" name="chk_info" id="GBP" onclick="cheak_exchange_rate('5');">GBP(￡)<br>
+				<input type="radio" name="chk_info" id="CNY" onclick="cheak_exchange_rate('6');">CNY(¥)<br>
+				<input type="radio" name="chk_info" id="INR" onclick="cheak_exchange_rate('7');">INR(Rs.)<br>
+				<input type="radio" name="chk_info" id="AUD" onclick="cheak_exchange_rate('8');">AUD($)<br>
+				<input type="radio" name="chk_info" id="SEK" onclick="cheak_exchange_rate('9');">SEK(kr)<br>
+
+			</form>
+		</td>
+		<td rowspan="6">
+			&nbsp;
+		</td>
+
+		<td rowspan="6">
+			<textarea rows="18" cols="45" name="contents" class="note">
+1.
+매출 
+-
+-
+
+순이익
+-
+-
+
+2.
+매출 
+-
+-
+
+순이익
+-
+-
+
+			</textarea>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="5">
+			<input type="text" class='text_style' name="result" id="resul" size=40 onkeydown="on()">
+		</td>
+		
+		
+	</tr>
+
+	<tr>
+		<td><input type="button" class='button_style' value="  7  " onClick="calculation.result.value+='7' "></td>
+		<td><input type="button"   class="button_style" value="  8  " onClick="calculation.result.value+='8'"></td>
+		<td><input type="button"   class="button_style" value="  9  " onClick="calculation.result.value+='9'"></td>
+		<td><input type="button"   class="button_style" value="  +  " onClick="calculation.result.value+='+'"></td>
+		<td><input type="button"   class="button_style" value=" % " onClick="calculation.result.value+='%' "></td>
+		<td><input type="button"   class="button_style" value="C" onClick="clears()"></td>
+	</tr>
+	<tr>
+		<td><input type="button"   class="button_style" value="  4  " onClick="calculation.result.value+='4'"></td>
+		<td><input type="button"   class="button_style" value="  5  " onClick="calculation.result.value+='5'"></td>
+		<td><input type="button"   class="button_style" value="  6  " onClick="calculation.result.value+='6'"></td>
+		<td><input type="button"   class="button_style" value="  −  " onClick="calculation.result.value+='-' "></td>
+		<td><input type="button"   class="button_style" value="  (  " onClick="calculation.result.value+='('"></td>
+		<td><input type="button"   class="button_style" value="←" onClick="del()"></td>
+	</tr>
+	<tr>
+		<td><input type="button"   class="button_style" value="  1  " onClick="calculation.result.value+='1'"></td>
+		<td><input type="button"   class="button_style" value="  2  " onClick="calculation.result.value+='2'"></td>
+		<td><input type="button"   class="button_style" value="  3  " onClick="calculation.result.value+='3'"></td>
+		<td><input type="button"   class="button_style" value="  ×  " onClick="calculation.result.value+='*' "></td>
+		<td><input type="button"   class="button_style" value="  )  " onClick="calculation.result.value+=')'"></td>
+		<td rowspan="2"><input type="button"  height="200"  class="button_style2" value="  =  " onClick="go()"></td>
+	</tr>	
+	<tr>
+		<td><input type="button"   class="button_style" value="  0  " onClick="calculation.result.value+='0'"></td>
+		<td><input type="button"   class="button_style" value=" 00 " onClick="calculation.result.value+='00'"></td>
+		<td><input type="button"   class="button_style" value=" ." onClick="calculation.result.value+='.'"></td>
+		<td><input type="button"   class="button_style" value="  ÷  " onClick="calculation.result.value+='/'"></td>
+		<td><input type="button"   class="button_style" value=" ▤ " onClick="see_rate_of_exchange(); "></td>
+		<td></td>
+
+	</tr>
+</table>
+</form>
+</body>
+</html>
