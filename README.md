@@ -2,13 +2,13 @@
 
 ![logo](cpr.jpg) 
 
-## Before use  
+### Before use  
 CRP.html -> line 141  
 app_id = ********  
 You need to change that part after receiving the API in the path below.  
 > https://openexchangerates.org/
 
-## How to use
+### How to use
 ![calculator](calculator.png)  
 - Numbers and symbols function like normal calculators.
 - ▤  = View current exchange rate
