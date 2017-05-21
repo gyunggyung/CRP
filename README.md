@@ -1,12 +1,12 @@
 # CRP
 
-![logo](crp.jpg) 
+![logo](cpr.jpg) 
 
 ## Before use  
 CRP.html -> line 141  
 app_id = ********  
 You need to change that part after receiving the API in the path below.  
-> [https://openexchangerates.org/](Get Instant Access)
+> https://openexchangerates.org/
 
 ## How to use
 ![calculator](calculator.png)  
