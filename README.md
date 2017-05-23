@@ -15,7 +15,6 @@ You need to change that part after receiving the API in the path below.
 
 ![result](result.png)  
 - Show calculation history and results.
-- Two decimal for a better view.
 
 ![rate](rate.png)  
 - If you click on the rate, the exchange rate will be changed.
