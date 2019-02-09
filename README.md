@@ -1,6 +1,7 @@
 # CRP
 
-![logo](cpr.jpg) 
+![logo](cpr.jpg)  
+When purchasing goods from Amazon etc. You will turn on a currency converter, a calculator, a notepad and buy things. With CRP, you can process the above process at once.
 
 ### Before use  
 CRP.html -> line 141  
